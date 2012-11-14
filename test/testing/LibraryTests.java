@@ -62,4 +62,20 @@ public class LibraryTests {
         removeSongLibrary.removeSong(song1);
         assertEquals(1, removeSongLibrary.songCount());
     }
+    
+    @Test
+    public void sortByTest() {
+        Library sortLibrary = new Library();
+        sortLibrary.addSong(new Song("Second", "First"));
+        sortLibrary.addSong(new Song("First", "Second"));
+        
+        sortLibrary.sortByTitle();
+        assertEquals("First", sortLibrary.getSong(0).getTitle());
+        assertEquals("Second", sortLibrary.getSong(0).getArtist());
+        
+        sortLibrary.sortByArtist();
+        assertEquals("First", sortLibrary.getSong(0).getArtist());
+        assertEquals("Second", sortLibrary.getSong(0).getTitle());
+        
+    }
 }
