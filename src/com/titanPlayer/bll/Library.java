@@ -5,6 +5,8 @@
 package com.titanPlayer.bll;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -30,4 +32,17 @@ public class Library {
     public void removeSong(Song songToRemove) {
         songs.remove(songToRemove);
     }
+    
+    public void sortByTitle() {
+        Collections.sort(songs, new TitleComparator());
+    }
+    
+    public void sortByArtist() {
+        Collections.sort(songs, new ArtistComparator());
+    }
+    
+    public Song getSong(int index) {
+        return songs.get(index);
+    }
+    
 }
