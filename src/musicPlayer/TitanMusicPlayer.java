@@ -5,6 +5,11 @@
 package musicPlayer;
 
 
+import com.titanPlayer.bll.MP3Filter;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+
+
 
 /**
  *
@@ -367,6 +372,11 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         jMenu2.setText("File");
 
         jMenuItem3.setText("Add New Song");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UploadSong(evt);
+            }
+        });
         jMenu2.add(jMenuItem3);
 
         jMenuItem1.setText("Add New Playlist");
@@ -389,6 +399,15 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void UploadSong(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UploadSong
+        JFileChooser uploadSongFC = new JFileChooser();
+        FileFilter mp3Filter = new MP3Filter();
+        uploadSongFC.setFileFilter(mp3Filter);
+        uploadSongFC.setAcceptAllFileFilterUsed(false);
+        int returnValue = uploadSongFC.showOpenDialog(this);
+        
+    }//GEN-LAST:event_UploadSong
 
     /**
      * @param args the command line arguments
