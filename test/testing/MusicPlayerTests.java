@@ -4,7 +4,7 @@
  */
 package testing;
 
-import com.titanPlayer.bll.Playlist;
+import com.titanPlayer.bll.MusicPlayer;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author Kyle
  */
-public class PlaylistTests {
+public class MusicPlayerTests {
     
-    public PlaylistTests() {
+    public MusicPlayerTests() {
     }
     
     @BeforeClass
@@ -36,10 +36,19 @@ public class PlaylistTests {
     @After
     public void tearDown() {
     }
-   
+    
     @Test
-    public void createPlaylistTest() {
-        Playlist myPlaylist = new Playlist("Name Of List");
-        assertEquals("Name Of List", myPlaylist.getName());
+    public void skipSongTest() {
+        MusicPlayer myPlayer = new MusicPlayer();
+        myPlayer.skipSong();
+        assertEquals(1, myPlayer.getCurrentSongIndex());
     }
+    
+    @Test
+    public void stopSong() {
+        MusicPlayer myPlayer = new MusicPlayer();
+        myPlayer.stopSong();
+        assertEquals(false, myPlayer.getPlayingStatus());
+    }
+    
 }
