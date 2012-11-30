@@ -5,7 +5,11 @@
 package testing;
 
 import com.titanPlayer.bll.Library;
+import com.titanPlayer.bll.MP3Filter;
 import com.titanPlayer.bll.Song;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -76,6 +80,19 @@ public class LibraryTests {
         sortLibrary.sortByArtist();
         assertEquals("First", sortLibrary.getSong(0).getArtist());
         assertEquals("Second", sortLibrary.getSong(0).getTitle());
-        
     }
+    
+//    @Test
+//    public void getFilePathTest() {
+//        Song song1 = new Song("Song One", "Artist One");
+//        String filePath = "C:\\Users\\Public\\Music\\Sample Music";
+//        JFileChooser uploadSongFC = new JFileChooser();
+//        FileFilter mp3Filter = new MP3Filter();
+//        uploadSongFC.setFileFilter(mp3Filter);
+//        uploadSongFC.setAcceptAllFileFilterUsed(false);
+//        
+//        File songFile = uploadSongFC.getSelectedFile();
+//        assertEquals(filePath, songFile.getAbsolutePath());
+////        int returnValue = uploadSongFC.showOpenDialog(this);
+//    }
 }

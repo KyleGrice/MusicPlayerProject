@@ -14,10 +14,17 @@ public class Song implements Comparable<Song>{
     
     private String title;
     private String artist;
+    private String filePath;
     
     public Song(String title, String artist) {
         this.title = title;
         this.artist = artist;
+    }
+        
+    public Song(String title, String artist, String filePath) {
+        this.title = title;
+        this.artist = artist;
+        this.filePath = filePath;
     }
     
     public String getTitle() {
@@ -26,6 +33,10 @@ public class Song implements Comparable<Song>{
     
     public String getArtist() {
         return this.artist;
+    }
+    
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     @Override

@@ -6,8 +6,22 @@ package musicPlayer;
 
 
 import com.titanPlayer.bll.MP3Filter;
+import com.titanPlayer.bll.Song;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.DefaultTableModel;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
 
 
 
@@ -42,7 +56,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        LibraryTable = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -57,7 +71,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         jList1 = new javax.swing.JList();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        PlaylistTable = new javax.swing.JTable();
         nowPlayingPanel = new javax.swing.JPanel();
         jProgressBar2 = new javax.swing.JProgressBar();
         nowPlayingSongTitle = new javax.swing.JLabel();
@@ -81,21 +95,12 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Library"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        LibraryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "Song Title", "Author"
+                "Song Title", "Artist"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -106,7 +111,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(LibraryTable);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -120,6 +125,11 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         );
 
         jButton1.setText("Add Song");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UploadSong(evt);
+            }
+        });
 
         jButton2.setText("Remove Song");
 
@@ -202,19 +212,12 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
         );
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        PlaylistTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "Song Title", "Author"
+                "Song Title", "Artist"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -225,7 +228,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable2);
+        jScrollPane3.setViewportView(PlaylistTable);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -400,6 +403,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Used to create a new Song and add it to the LibraryTable
     private void UploadSong(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UploadSong
         JFileChooser uploadSongFC = new JFileChooser();
         FileFilter mp3Filter = new MP3Filter();
@@ -407,6 +411,29 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         uploadSongFC.setAcceptAllFileFilterUsed(false);
         int returnValue = uploadSongFC.showOpenDialog(this);
         
+        try {
+            File songFile = uploadSongFC.getSelectedFile();
+            
+            // AudioFile and Tag are from the JAudioTagger library
+            AudioFile songAudioFile = AudioFileIO.read(songFile);
+            Tag tag = songAudioFile.getTag();
+            Song song1 = new Song(tag.getFirst(FieldKey.TITLE), tag.getFirst(FieldKey.ARTIST), songFile.getAbsolutePath());
+  
+            DefaultTableModel model = (DefaultTableModel)LibraryTable.getModel();
+            model.addRow(new Object[]{song1.getTitle(), song1.getArtist()});
+        
+            // The catch statements below were autogenerated by JAudioTagger.  I decided to keep them for now.
+        } catch (CannotReadException ex) {
+            Logger.getLogger(TitanMusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TitanMusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TagException ex) {
+            Logger.getLogger(TitanMusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ReadOnlyFileException ex) {
+            Logger.getLogger(TitanMusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidAudioFrameException ex) {
+            Logger.getLogger(TitanMusicPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_UploadSong
 
     /**
@@ -444,6 +471,8 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable LibraryTable;
+    private javax.swing.JTable PlaylistTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
@@ -479,8 +508,6 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JPanel nowPlayingPanel;
     private javax.swing.JLabel nowPlayingSongTitle;
     private javax.swing.JPanel outermostPanel;
