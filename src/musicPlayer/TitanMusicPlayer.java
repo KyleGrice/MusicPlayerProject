@@ -84,7 +84,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        addToPlaylistButton = new javax.swing.JButton();
         playlistPanel = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
@@ -157,10 +157,10 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
 
         jButton2.setText("Remove Song");
 
-        jButton3.setText("Add to Playlist");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        addToPlaylistButton.setText("Add to Playlist");
+        addToPlaylistButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                addToPlaylistButtonActionPerformed(evt);
             }
         });
 
@@ -173,13 +173,13 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(addToPlaylistButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(addToPlaylistButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -484,9 +484,47 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         playlistRepo.addPlaylist(newPlaylist);
     }//GEN-LAST:event_createNewPlaylist
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void addToPlaylistButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToPlaylistButtonActionPerformed
+        // Get the index of the selected song in the libraryTable
+        int libraryIndex = libraryTable.getSelectedRow();
         
-    }//GEN-LAST:event_jButton3ActionPerformed
+        // The libraryIndex will be -1 if nothing was selected.  Otherwise, it will match
+        // the index of the selected song in the userLibrary.
+        if (libraryIndex >= 0) {
+            // Get the index of the selected playlist.
+            int playlistIndex = playlistList.getSelectedIndex();
+               
+            // The playlistIndex will be -1 if no playlist was selected.
+            if (playlistIndex >= 0) {
+                // Get the selected Song from the library.
+                Song songToAdd = userLibrary.getSong(libraryIndex);
+            
+                // Get the name of the selected playlist
+                DefaultListModel lModel = (DefaultListModel)playlistList.getModel();
+                String nameOfPlaylist = (String)lModel.getElementAt(playlistIndex);
+                
+                // Add the song to the playlist.
+                playlistRepo.getPlaylist(nameOfPlaylist).addSong(songToAdd);
+                
+                // Display the playlist in the playlistTable.
+                Playlist playlistToDisplay = playlistRepo.getPlaylist(nameOfPlaylist);
+                DefaultTableModel tModel = (DefaultTableModel)playlistTable.getModel();
+                while (tModel.getRowCount() > 0) {
+                    tModel.removeRow(0);
+                }
+                for (int i = 0; i < playlistToDisplay.songCount(); i++) {
+                    tModel.addRow(new Object[]{playlistToDisplay.getSongList().get(i).getTitle(), playlistToDisplay.getSongList().get(i).getArtist()});
+                }
+                
+            }
+            else {
+                // Display message that a playlist must be selected.
+            }
+        }
+        else {
+            // Display message that a song must be selected.
+        }
+    }//GEN-LAST:event_addToPlaylistButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -523,10 +561,10 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addToPlaylistButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;

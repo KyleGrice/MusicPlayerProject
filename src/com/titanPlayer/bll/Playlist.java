@@ -14,7 +14,7 @@ import java.util.List;
 public class Playlist {
     
     private String playlistName;
-    List<Song> songs;
+    ArrayList<Song> songs;
     
     public Playlist(String nameOfList) {
         this.playlistName = nameOfList;
@@ -33,4 +33,7 @@ public class Playlist {
         return songs.size();
     }
     
+    public ArrayList<Song> getSongList() {
+        return songs;
+    }
 }
