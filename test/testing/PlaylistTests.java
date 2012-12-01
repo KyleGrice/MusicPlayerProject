@@ -5,6 +5,7 @@
 package testing;
 
 import com.titanPlayer.bll.Playlist;
+import com.titanPlayer.bll.Song;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,4 +43,13 @@ public class PlaylistTests {
         Playlist myPlaylist = new Playlist("Name Of List");
         assertEquals("Name Of List", myPlaylist.getName());
     }
+    
+    @Test
+    public void addSongTest() {
+        Playlist myPlaylist = new Playlist("Name of List");
+        myPlaylist.addSong(new Song("Song One", "Artist One"));
+        myPlaylist.addSong(new Song("Song Two", "Artist Two"));
+        assertEquals(2, myPlaylist.songCount());
+    }
+    
 }

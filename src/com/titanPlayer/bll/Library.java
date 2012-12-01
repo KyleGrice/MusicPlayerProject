@@ -19,7 +19,7 @@ public class Library {
     UserAccount user;
     
     public Library() {
-        songs = new ArrayList<Song>();
+        songs = new ArrayList<>();
     }
     
     public void addSong(Song songToAdd) {
