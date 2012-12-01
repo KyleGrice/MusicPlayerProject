@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
@@ -50,6 +51,8 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         // If the user has no library, this just gets a new Library.
         this.userLibrary = repo.getUserLibrary(user);
         
+        
+        
     }
 
     /**
@@ -82,7 +85,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        PlaylistList = new javax.swing.JList();
+        playlistList = new javax.swing.JList();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         PlaylistTable = new javax.swing.JTable();
@@ -185,6 +188,11 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         playlistPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Playlists"));
 
         jButton4.setText("New Playlist");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createNewPlaylist(evt);
+            }
+        });
 
         jButton5.setText("Delete Playlist");
 
@@ -208,7 +216,8 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
             .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jScrollPane2.setViewportView(PlaylistList);
+        playlistList.setModel(new DefaultListModel());
+        jScrollPane2.setViewportView(playlistList);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -451,6 +460,10 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_UploadSong
 
+    private void createNewPlaylist(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewPlaylist
+        new PlaylistNamePrompt(playlistList).setVisible(true);
+    }//GEN-LAST:event_createNewPlaylist
+
     /**
      * @param args the command line arguments
      */
@@ -487,7 +500,6 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable LibraryTable;
-    private javax.swing.JList PlaylistList;
     private javax.swing.JTable PlaylistTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -526,6 +538,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
     private javax.swing.JPanel nowPlayingPanel;
     private javax.swing.JLabel nowPlayingSongTitle;
     private javax.swing.JPanel outermostPanel;
+    private javax.swing.JList playlistList;
     private javax.swing.JPanel playlistPanel;
     // End of variables declaration//GEN-END:variables
 
