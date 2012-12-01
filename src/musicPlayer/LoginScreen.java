@@ -128,7 +128,7 @@ public class LoginScreen extends javax.swing.JFrame {
             
             // If everything validates, display music player.  Otherwise, display error message.
             if (user1.ValidAccount()) {
-                new TitanMusicPlayer().setVisible(true);
+                new TitanMusicPlayer(user1).setVisible(true);
                 this.setVisible(false);
             }
             else {

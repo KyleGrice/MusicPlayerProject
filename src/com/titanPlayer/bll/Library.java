@@ -16,6 +16,7 @@ import java.util.List;
 public class Library {
     
     List<Song> songs;
+    UserAccount user;
     
     public Library() {
         songs = new ArrayList<Song>();
@@ -43,6 +44,14 @@ public class Library {
     
     public Song getSong(int index) {
         return songs.get(index);
+    }
+
+    public void assignUser(UserAccount user) {
+        this.user = user;
+    }
+    
+    public UserAccount getUser() {
+        return this.user;
     }
     
 }
