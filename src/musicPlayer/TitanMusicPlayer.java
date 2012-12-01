@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import org.jaudiotagger.audio.AudioFile;
@@ -83,7 +84,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         libraryTable = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        removeSongButton = new javax.swing.JButton();
         addToPlaylistButton = new javax.swing.JButton();
         playlistPanel = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -155,7 +156,12 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Remove Song");
+        removeSongButton.setText("Remove Song");
+        removeSongButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeSongButtonActionPerformed(evt);
+            }
+        });
 
         addToPlaylistButton.setText("Add to Playlist");
         addToPlaylistButton.addActionListener(new java.awt.event.ActionListener() {
@@ -171,14 +177,14 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(removeSongButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(addToPlaylistButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(removeSongButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(addToPlaylistButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -472,16 +478,15 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_UploadSong
 
-    private void addPlaylistNameToList() {
-        new PlaylistNamePrompt(playlistList).setVisible(true);
-    }
     
-    private void createNewPlaylist(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewPlaylist
-        addPlaylistNameToList();
-        
+    public void addPlaylistToRepo() {
         DefaultListModel lm = (DefaultListModel)playlistList.getModel();
         Playlist newPlaylist = new Playlist((String)lm.lastElement());
         playlistRepo.addPlaylist(newPlaylist);
+    }
+    
+    private void createNewPlaylist(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createNewPlaylist
+        new PlaylistNamePrompt(playlistList, this).setVisible(true);
     }//GEN-LAST:event_createNewPlaylist
 
     private void addToPlaylistButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToPlaylistButtonActionPerformed
@@ -504,10 +509,10 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
                 String nameOfPlaylist = (String)lModel.getElementAt(playlistIndex);
                 
                 // Add the song to the playlist.
-                playlistRepo.getPlaylist(nameOfPlaylist).addSong(songToAdd);
-                
-                // Display the playlist in the playlistTable.
                 Playlist playlistToDisplay = playlistRepo.getPlaylist(nameOfPlaylist);
+                playlistToDisplay.addSong(songToAdd);
+                
+                // Display the playlist in the playlistTable.                
                 DefaultTableModel tModel = (DefaultTableModel)playlistTable.getModel();
                 while (tModel.getRowCount() > 0) {
                     tModel.removeRow(0);
@@ -519,12 +524,33 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
             }
             else {
                 // Display message that a playlist must be selected.
+                JOptionPane.showMessageDialog(this, "A playlist must be selected", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         else {
             // Display message that a song must be selected.
+            JOptionPane.showMessageDialog(this, "A song from the library must be selected", "Info", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_addToPlaylistButtonActionPerformed
+
+    private void removeSongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSongButtonActionPerformed
+        // Get index of selected song to delete.
+        int libraryIndex = libraryTable.getSelectedRow();
+        
+        // Index will be >= 0 if a song was selected.
+        if (libraryIndex >= 0) {
+            // Find the song in the userLibrary and remove it.
+            DefaultTableModel tModel = (DefaultTableModel)libraryTable.getModel();
+            Song songToRemove = new Song((String)tModel.getValueAt(libraryIndex, 0), (String)tModel.getValueAt(libraryIndex, 1));
+            userLibrary.removeSong(songToRemove);
+            
+            // Delete the song from the libraryTable.
+            tModel.removeRow(libraryIndex);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Select a song to be deleted from the library", "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_removeSongButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -564,7 +590,6 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
     private javax.swing.JButton addToPlaylistButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -602,6 +627,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
     private javax.swing.JList playlistList;
     private javax.swing.JPanel playlistPanel;
     private javax.swing.JTable playlistTable;
+    private javax.swing.JButton removeSongButton;
     // End of variables declaration//GEN-END:variables
 
 }

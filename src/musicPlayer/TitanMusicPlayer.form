@@ -169,7 +169,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jButton1" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton2" max="32767" attributes="0"/>
+                          <Component id="removeSongButton" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="addToPlaylistButton" min="-2" pref="130" max="-2" attributes="0"/>
                       </Group>
@@ -178,7 +178,7 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jButton1" pref="30" max="32767" attributes="0"/>
-                      <Component id="jButton2" max="32767" attributes="0"/>
+                      <Component id="removeSongButton" max="32767" attributes="0"/>
                       <Component id="addToPlaylistButton" alignment="1" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
@@ -192,10 +192,13 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UploadSong"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton2">
+                <Component class="javax.swing.JButton" name="removeSongButton">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Remove Song"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeSongButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="addToPlaylistButton">
                   <Properties>

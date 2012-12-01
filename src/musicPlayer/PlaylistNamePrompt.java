@@ -15,14 +15,16 @@ import javax.swing.JOptionPane;
 public class PlaylistNamePrompt extends javax.swing.JFrame {
 
     JList playlistList;
+    TitanMusicPlayer titanPlayer;
     
     /**
      * Creates new form PlaylistNamePropmt
      */
-    public PlaylistNamePrompt(JList playlistList) {
+    public PlaylistNamePrompt(JList playlistList, TitanMusicPlayer titanPlayer) {
         initComponents();
         
         this.playlistList = playlistList;
+        this.titanPlayer = titanPlayer;
     }
 
     /**
@@ -100,6 +102,7 @@ public class PlaylistNamePrompt extends javax.swing.JFrame {
         if (!"".equals(newPlaylistNameText.getText())) {
             DefaultListModel lm = (DefaultListModel)playlistList.getModel();
             lm.addElement(newPlaylistNameText.getText());
+            titanPlayer.addPlaylistToRepo();
             this.dispose();
         }
         else {
