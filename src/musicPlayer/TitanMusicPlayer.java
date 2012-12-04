@@ -21,6 +21,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
+import javazoom.jl.player.advanced.AdvancedPlayer;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -102,7 +103,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         nowPlayingSongTitle = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton8 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        playPauseButton = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
@@ -304,7 +305,12 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
 
         jButton8.setText("Skip Forward");
 
-        jButton7.setText("Play/Pause");
+        playPauseButton.setText("Play/Pause");
+        playPauseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playPauseButtonActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("Skip Back");
 
@@ -320,7 +326,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton7)
+                .addComponent(playPauseButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton8)
                 .addContainerGap(84, Short.MAX_VALUE))
@@ -332,7 +338,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton10)
                     .addComponent(jButton9)
-                    .addComponent(jButton7)
+                    .addComponent(playPauseButton)
                     .addComponent(jButton8))
                 .addGap(88, 88, 88))
         );
@@ -552,6 +558,20 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_removeSongButtonActionPerformed
 
+    private void playPauseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPauseButtonActionPerformed
+        // Get the index of the selected playlist.
+        int playlistIndex = playlistList.getSelectedIndex();
+               
+        // The playlistIndex will be -1 if no playlist was selected.
+        if (playlistIndex >= 0) {
+            // Get the name of the selected playlist
+            DefaultListModel lModel = (DefaultListModel)playlistList.getModel();
+            String nameOfPlaylist = (String)lModel.getElementAt(playlistIndex);
+            
+//            AdvancedPlayer player = new AdvancedPlayer();
+        }
+    }//GEN-LAST:event_playPauseButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -593,7 +613,6 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JFileChooser jFileChooser1;
@@ -624,6 +643,7 @@ public class TitanMusicPlayer extends javax.swing.JFrame {
     private javax.swing.JPanel nowPlayingPanel;
     private javax.swing.JLabel nowPlayingSongTitle;
     private javax.swing.JPanel outermostPanel;
+    private javax.swing.JButton playPauseButton;
     private javax.swing.JList playlistList;
     private javax.swing.JPanel playlistPanel;
     private javax.swing.JTable playlistTable;
